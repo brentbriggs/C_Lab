@@ -1,5 +1,5 @@
 SHELL=/bin/zsh
-TARGETDIR := .
+TARGETDIR := ./bin
 SRCDIR := src
 OBJECTS =
 CFLAGS = -L/Users/brent/dev/lib `pkg-config --cflags glib-2.0 gsl` -g -Wall -O0 -std=c11 -x c
@@ -17,4 +17,4 @@ $(TARGETDIR) :
 
 .PHONY : clean
 clean :
-	rm -rf $(TARGETDIR)/*.dSYM $(TARGETDIR)/*(x) $(TARGETDIR)/*.[^c*]*
+	rm -rf $(OBJECTS) $(TARGETDIR)/*.dSYM $(TARGETDIR)/*(x) $(TARGETDIR)/*.[^c*]*
