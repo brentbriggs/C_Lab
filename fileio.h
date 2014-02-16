@@ -28,6 +28,3 @@ int file_line_count(char *filepath);
 FILE *file_open(char *filepath, char *mode);
 int file_print(char *filepath);
 int file_put_line(char *filepath, char *string);
-
-
-
