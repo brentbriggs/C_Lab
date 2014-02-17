@@ -1,0 +1,27 @@
+INC_DIR=../include
+LDIR=../lib
+OBJ_DIR=obj
+SHELL=/bin/zsh
+
+_DEPS=fileio.h
+DEPS=$(patsubst %,$(INC_DIR)/%,$(_DEPS))
+
+_OBJ=fileio.o fileio_test.o
+OBJ=$(patsubst %,$(OBJ_DIR)/%,$(_OBJ))
+
+CFLAGS=-I$(INC_DIR) `pkg-config --cflags glib-2.0` -g -Wall -O0 -std=c11 -x c
+LDLIBS=`pkg-config --libs glib-2.0`
+CC=clang
+
+$(OBJ_DIR)/%.o: %.c $(DEPS) | $(OBJ_DIR)
+	$(CC) -c -o $@ $< $(CFLAGS)
+
+fileio_test : $(OBJ)
+	$(CC) $(LDLIBS) -o $@ $^
+
+$(OBJ_DIR):
+	mkdir -p $(OBJ_DIR)
+
+.PHONY : clean
+clean :
+	rm -rf $(OBJ_DIR)/*.o *(x)
