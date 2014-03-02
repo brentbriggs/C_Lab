@@ -2,11 +2,10 @@ INC_DIR=../include
 LDIR=../lib
 OBJ_DIR=obj
 SHELL=/bin/zsh
-
-_DEPS=fileio.h
+_DEPS=text_file.h
 DEPS=$(patsubst %,$(INC_DIR)/%,$(_DEPS))
 
-_OBJ=fileio.o fileio_test.o
+_OBJ=text_file.o text_file_test.o
 OBJ=$(patsubst %,$(OBJ_DIR)/%,$(_OBJ))
 
 CFLAGS=-I$(INC_DIR) `pkg-config --cflags glib-2.0` -g -Wall -O0 -std=c11 -x c
@@ -16,7 +15,7 @@ CC=clang
 $(OBJ_DIR)/%.o: %.c $(DEPS) | $(OBJ_DIR)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
-fileio_test : $(OBJ)
+text_file_test : $(OBJ)
 	$(CC) $(LDLIBS) -o $@ $^
 
 $(OBJ_DIR):
