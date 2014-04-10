@@ -9,25 +9,25 @@
  * DESCRIPTION:
  * Test driver for fileio using the glib testing framework.
  *****************************************************************************/
-#include "text_file.h"
+#include "file.h"
 #include <glib.h>
 
 /** Test that new file can be created, opened and closed */
 void test_file_open_close() {
     char *filepath = "test_file.txt";
-    text_file_s *file = text_file_new(filepath, "w+");
+    file_s *file = file_new(filepath, "w+");
     g_assert(file != NULL);
-    g_assert((text_file_free(file)) == 0);
+    g_assert((file_free(file)) == 0);
     remove(filepath);
 }
 
 /** Test writing to a file */
 void test_file_text_read_write() {
     char *filepath = "test_file.txt";
-    text_file_s *file = text_file_new(filepath, "w+");
+    file_s *file = file_new(filepath, "w+");
     char *test_line = "This is a test line.";
-    g_assert((text_file_put_line(file, test_line)) == 0);
-    remove(filepath);
+    g_assert((file_put_line(file, test_line)) == 0);
+
 }
 
 int main(int argc, char **argv) {
