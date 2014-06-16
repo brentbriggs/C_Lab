@@ -22,7 +22,7 @@ int file_clear(char *filename) {
     return 0;
 }
 
-/** Wrapper for fclose() from stdio.h. */
+/** Wrapper for fclose() from stdio.h. Includes error checking. */
 int file_close(FILE *file) {
     if (fclose(file) == EOF ) {
         fprintf(stderr, "ERROR Closing File: %s\n", strerror(errno));
@@ -210,6 +210,19 @@ int file_put_line(char* filename, char *string) {
     }
 }
 
+int file_remove(char *filename)
+{
+    if (remove(filename) == -1)
+    {
+        fprintf(stderr, "ERROR Removing File: %s\n", strerror(errno));
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+}
+
 int main()
 {
     char *filename1 = "test_file1.txt";
@@ -259,7 +272,9 @@ int main()
     assert(file_line_count(filename1) == 0);
     assert(file_line_count(filename2) == 0);
 
-
+    /* Remove both files. */
+    assert(file_remove(filename1) == 0);
+    assert(file_remove(filename2) == 0);
 
     return 0;
 }

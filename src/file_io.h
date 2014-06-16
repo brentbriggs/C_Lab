@@ -37,3 +37,4 @@ int file_line_count(char *filename);
 FILE *file_open(char *filename, char *mode);
 int file_print(char *filename);
 int file_put_line(char *filename, char *string);
+int file_remove(char *filename);
