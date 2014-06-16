@@ -22,27 +22,18 @@
 
 #define MODE_READ_BEGINNING "r" /* file must exist */
 #define MODE_READ_WRITE_BEGINNING "r+" /* file must exist */
-#define MODE_WRITE_TRUNCATE "w"
+#define MODE_WRITE_TRUNCATE "w" /* Creates empty file for writing or erases
+                                   contents of */
 #define MODE_READ_WRITE_TRUNCATE "w+"
 #define MODE_APPEND_WRITE "a"
 #define MODE_APPEND_READ_WRITE "a+"
 
-typedef struct file_s {
-    char *pathname;
-    FILE *file_p;
-} file_s;
-
-/** Constructors */
-file_s *file_new(char *pathname, char *mode);
-
-/** Destructors */
-int file_free(file_s *file);
-
-/** Operational functions */
-int file_clear(file_s *file);
-int file_compare(file_s *file1, file_s *file2);
-int file_copy(file_s *file1, file_s *file2);
-char ** file_get_lines(file_s *file, int start, int count);
-int file_line_count(file_s *file);
-int file_print(file_s *file);
-int file_put_line(file_s *file, char *string);
+int file_clear(char *filename);
+int file_close(FILE *file);
+int file_compare(char *filename1, char *filename2);
+int file_copy(char *file1, char *file2);
+char ** file_get_lines(char *filename, int start, int count);
+int file_line_count(char *filename);
+FILE *file_open(char *filename, char *mode);
+int file_print(char *filename);
+int file_put_line(char *filename, char *string);

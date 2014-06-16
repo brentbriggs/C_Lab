@@ -9,8 +9,7 @@
  * DESCRIPTION:
  * Implementation for text_file_s structure manipulation functions.
  *****************************************************************************/
-#include <check.h>
-#include "file.h"
+#include "file_io.h"
 
 /** Clear the contents of a text file but do not delete it. */
 int file_clear(char *filename) {
@@ -93,18 +92,21 @@ int file_copy(char *filename1, char *filename2) {
             status = 1;
         }
     }
+
+    file_close(file1);
+    file_close(file2);
     return status;
 }
 
-/** Return count lines of text from a file starting at start.*/
+/** Return "count" lines of text from a file starting at start.*/
 char ** file_get_lines(char *filename, int start, int count) {
-
-
-    if (file_line_count(file) < (start + count -1)) return NULL;
-    if(file_set_mode(file, MODE_READ_BEGINNING) == 1) {
-        fprintf(stderr, "ERROR: Failed to read file.\n");
+    FILE *file = file_open(filename, MODE_READ_BEGINNING);
+    if(file == NULL){
+        fprintf(stderr, "ERROR: Could not get lines for file %s.\n", filename);
         return NULL;
     }
+
+    if (file_line_count(filename) < (start + count -1)) return NULL;
 
     char **line_array = malloc (sizeof (char *) * count);
     if (!line_array) {
@@ -120,12 +122,12 @@ char ** file_get_lines(char *filename, int start, int count) {
     char str[MAX_LINE_LENGTH];
     int len;
     for(int i=0; i < (start + count - 1); i++) {
-        if(fgets(str, sizeof(str), file->file_p) == NULL) {
-            if(ferror(file->file_p) != 0)
-                fprintf(stderr, "ERROR: %s\n", strerror(ferror(file->file_p)));
-            if(feof(file->file_p) != 0) {
+        if(fgets(str, sizeof(str), file) == NULL) {
+            if(ferror(file) != 0)
+                fprintf(stderr, "ERROR: %s\n", strerror(ferror(file)));
+            if(feof(file) != 0) {
                 fprintf(stderr, "ERROR: Attempted to read past the end of \
-                        file %s.\n", file->filename);
+                        file %s.\n", filename);
             }
         }
         if(i >= (start - 1)) {
@@ -136,17 +138,29 @@ char ** file_get_lines(char *filename, int start, int count) {
             line_array[i] = strdup(str);
         }
     }
+
+    file_close(file);
     return line_array;
 }
 
 /** Count the number of lines in a text file */
-int file_line_count(char* filename) {
+int file_line_count(char *filename) {
+    FILE *file = file_open(filename, MODE_READ_BEGINNING);
+    if(file == NULL){
+        fprintf(stderr,
+                "ERROR: Could not get line count for file %s.\n",
+                filename);
+        return -1;
+    }
+
     int line_count = 0;
     char line[MAX_LINE_LENGTH];
 
-    while(fgets(line, MAX_LINE_LENGTH, file->file_p)) {
+    while(fgets(line, MAX_LINE_LENGTH, file)) {
             line_count++;
     }
+
+    file_close(file);
     return line_count;
 }
 
@@ -154,26 +168,51 @@ int file_line_count(char* filename) {
 FILE *file_open(char *filename, char *mode) {
     FILE *file = fopen(filename, mode);
     if (file == NULL) {
-        fprintf(stderr, "ERROR: %s\n", strerror(errno);
+        fprintf(stderr, "ERROR: %s\n", strerror(errno));
     }
     return file;
 }
 
 /** Print the contents of file to the screan */
 int file_print(char* filename) {
+    FILE *file = file_open(filename, MODE_READ_BEGINNING);
+    if(file == NULL){
+        fprintf(stderr, "ERROR: Could not print file %s.\n", filename);
+        return 1;
+    }
+
     int c;
-    while((c = fgetc(file->file_p)) != EOF) {
+    while((c = fgetc(file)) != EOF) {
         fputc(c, stdout);
     }
+
+    file_close(file);
     return 0;
 }
 
 /** Append a line of text to a file */
 int file_put_line(char* filename, char *string) {
-    if (fputs(string, file->file_p) && fputs("\n", file->file_p)) {
-        fflush(file->file_p);
+    FILE *file = file_open(filename, MODE_APPEND_WRITE);
+    if(file == NULL){
+        fprintf(stderr, "ERROR: Could not put line in file %s.\n", filename);
+        return 1;
+    }
+
+    if (fputs(string, file) && fputs("\n", file)) {
+        fflush(file);
+        file_close(file);
         return 0;
     }
     else
+        file_close(file);
         return 1;
+}
+
+int main(int argc, char *argv[])
+{
+    char *filename1 = "test_file1.txt";
+    char *filename2 = "test_file2.txt";
+    file_clear(filename1);
+    file_clear(filename2);
+    return 0;
 }
