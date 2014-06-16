@@ -19,4 +19,4 @@ $(TARGETDIR) :
 
 .PHONY : clean
 clean :
-	rm -rf $(TARGETDIR)/*
+	rm -rf $(TARGETDIR)*
