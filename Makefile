@@ -14,6 +14,11 @@ file_io : $(TARGETDIR)/file_io
 $(TARGETDIR)/file_io : $(SRCDIR)/file_io.c $(OBJECTS) | $(TARGETDIR)
 	$(CC) $(CFLAGS) $(LDLIBS) $^ -o $@
 
+glist_demo : $(TARGETDIR)/glist_demo
+.DELETE_ON_ERROR : $(TARGETDIR)/glist_demo
+$(TARGETDIR)/glist_demo : $(SRCDIR)/glist_demo.c $(OBJECTS) | $(TARGETDIR)
+	$(CC) $(CFLAGS) $(LDLIBS) $^ -o $@
+
 gslist_demo : $(TARGETDIR)/gslist_demo
 .DELETE_ON_ERROR : $(TARGETDIR)/gslist_demo
 $(TARGETDIR)/gslist_demo : $(SRCDIR)/gslist_demo.c $(OBJECTS) | $(TARGETDIR)
