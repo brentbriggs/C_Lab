@@ -14,6 +14,11 @@ file_io : $(TARGETDIR)/file_io
 $(TARGETDIR)/file_io : $(SRCDIR)/file_io.c $(OBJECTS) | $(TARGETDIR)
 	$(CC) $(CFLAGS) $(LDLIBS) $^ -o $@
 
+garray_demo : $(TARGETDIR)/garray_demo
+.DELETE_ON_ERROR : $(TARGETDIR)/garray_demo
+$(TARGETDIR)/garray_demo : $(SRCDIR)/garray_demo.c $(OBJECTS) | $(TARGETDIR)
+	$(CC) $(CFLAGS) $(LDLIBS) $^ -o $@
+
 ghashtable_demo : $(TARGETDIR)/ghashtable_demo
 .DELETE_ON_ERROR : $(TARGETDIR)/ghashtable_demo
 $(TARGETDIR)/ghashtable_demo : $(SRCDIR)/ghashtable_demo.c $(OBJECTS) | $(TARGETDIR)
