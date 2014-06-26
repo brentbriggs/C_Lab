@@ -117,7 +117,6 @@ int main() {
     print_int_array(int_array);
     printf("\n");
 
-
     printf("Free the array of ints using g_array_free(int_array, FALSE).\n\n");
     g_array_free(int_array, FALSE);
 
