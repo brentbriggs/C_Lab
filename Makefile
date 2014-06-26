@@ -7,7 +7,8 @@ LDLIBS = `pkg-config --libs glib-2.0 gsl`
 CC = clang
 
 .PHONY : all
-all : file_io garray_demo ghashtable_demo glist_demo gslist_demo gtree_demo
+all : file_io garray_demo ghashtable_demo glist_demo gslist_demo gtree_demo \
+	  gqueue_demo
 
 file_io : $(TARGETDIR)/file_io
 .DELETE_ON_ERROR : $(TARGETDIR)/file_io
@@ -37,6 +38,11 @@ $(TARGETDIR)/gslist_demo : $(SRCDIR)/gslist_demo.c $(OBJECTS) | $(TARGETDIR)
 gtree_demo : $(TARGETDIR)/gtree_demo
 .DELETE_ON_ERROR : $(TARGETDIR)/gtree_demo
 $(TARGETDIR)/gtree_demo : $(SRCDIR)/gtree_demo.c $(OBJECTS) | $(TARGETDIR)
+	$(CC) $(CFLAGS) $(LDLIBS) $^ -o $@
+
+gqueue_demo : $(TARGETDIR)/gqueue_demo
+.DELETE_ON_ERROR : $(TARGETDIR)/gqueue_demo
+$(TARGETDIR)/gqueue_demo : $(SRCDIR)/gqueue_demo.c $(OBJECTS) | $(TARGETDIR)
 	$(CC) $(CFLAGS) $(LDLIBS) $^ -o $@
 
 
