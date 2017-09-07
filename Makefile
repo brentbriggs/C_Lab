@@ -2,7 +2,7 @@ SHELL=/bin/zsh
 TARGETDIR := ./bin
 SRCDIR := ./src
 OBJECTS =
-CFLAGS = `pkg-config --cflags glib-2.0 gsl` -g -Wall -O0 -std=c11 -x c
+CFLAGS = `pkg-config --cflags glib-2.0 gsl` -g -Wall -O0 -std=gnu11 -x c
 LDLIBS = `pkg-config --libs glib-2.0 gsl`
 CC = clang
 

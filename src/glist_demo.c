@@ -49,7 +49,7 @@ int main() {
 
     printf("The item two items before the current using g_list_nth_prev(): "\
             "%s\n\n",
-            g_list_nth_prev(list, 2)->data); /* The int arg must be within the
+            g_list_nth_prev(list, 2)->data); /* The gint arg must be within the
                                                 bounds of the list or you will
                                                 have a crash */
 
